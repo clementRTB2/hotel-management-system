@@ -7,7 +7,7 @@ const {
   updateService,
   deleteService
 } = require('../controllers/serviceController');
-const { verifyToken, verifyAdmin } = require('../middleware/authMiddleware'); // Assuming you have some middleware for authentication
+const { verifyToken, verifyAdmin } = require('../middlewares/authMiddleware'); // Assuming you have some middleware for authentication
 
 // Create a new service
 router.post('/', verifyToken, verifyAdmin, createService);

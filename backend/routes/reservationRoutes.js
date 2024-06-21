@@ -7,7 +7,7 @@ const {
   updateReservation,
   deleteReservation
 } = require('../controllers/reservationController');
-const { verifyToken, verifyAdmin } = require('../middleware/authMiddleware'); // Assuming you have some middleware for authentication
+const { verifyToken, verifyAdmin } = require('../middlewares/authMiddleware'); // Assuming you have some middleware for authentication
 
 // Create a new reservation
 router.post('/', verifyToken, createReservation);

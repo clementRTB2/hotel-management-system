@@ -2,6 +2,14 @@ const Reservation = require('../models/Reservation');
 
 // Create a new reservation
 const createReservation = async (req, res) => {
+  const isRoomAvailable = await checkRoomAvailability(
+    req.body.room,
+    req.body.checkIn,
+    req.body.checkOut,
+  )
+  if(!isRoomAvailable) {
+    return res.status(400).json({ message: "La chambre n'est pas disponible pour ces dates." });
+  }
   try {
     const reservation = new Reservation({
       ...req.body,
@@ -56,6 +64,20 @@ const deleteReservation = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+const checkRoomAvailability = async (roomId, checkIn, checkOut) => {
+  // Vérifier s'il existe une réservation qui chevauche les dates données
+  const existingReservation = await Reservation.findOne({
+    room: roomId,
+    $or: [
+      { checkIn: { $lte: checkOut }, checkOut: { $gte: checkIn } }, // Nouvelle réservation commence pendant une réservation existante
+      { checkIn: { $gte: checkIn, $lte: checkOut } }, // Nouvelle réservation commence avant la fin d'une réservation existante
+      { checkOut: { $gt: checkIn, $lte: checkOut } } // Nouvelle réservation finit après le début d'une réservation existante
+    ]
+  });
+
+  return !existingReservation; // True si aucune réservation n'est trouvée qui chevauche les dates
+}
 
 module.exports = {
   createReservation,

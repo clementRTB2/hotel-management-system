@@ -7,7 +7,7 @@ const {
   updateUser,
   deleteUser
 } = require('../controllers/userController');
-const { verifyToken, verifyAdmin } = require('../middleware/authMiddleware'); // Assuming you have some middleware for authentication
+const { verifyToken, verifyAdmin } = require('../middlewares/authMiddleware'); // Assuming you have some middleware for authentication
 
 // Create a new user
 router.post('/', verifyToken, verifyAdmin, createUser);

@@ -7,7 +7,7 @@ const {
   updateRoom,
   deleteRoom
 } = require('../controllers/roomController');
-const { verifyToken, verifyAdmin } = require('../middleware/authMiddleware'); // Assuming you have some middleware for authentication
+const { verifyToken, verifyAdmin } = require('../middlewares/authMiddleware'); // Assuming you have some middleware for authentication
 
 // Create a new room
 router.post('/', verifyToken, verifyAdmin, createRoom);
